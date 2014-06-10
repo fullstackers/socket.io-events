@@ -45,7 +45,7 @@ describe 'Router', ->
       Given -> spyOn(@router,['decorate']).andCallThrough()
       Given -> @args = ['message', 'hello', @fn]
       When -> @router.onRoute @socket, @args
-      Then -> expect(@router.getPath).toHaveBeenCalledWith @args
+      Then -> expect(@router.getPath).toHaveBeenCalledWith @args[0]
       And -> expect(@router.decorate).toHaveBeenCalledWith @socket, jasmine.any(Function)
       And -> expect(@a).toHaveBeenCalled()
       And -> expect(@b).toHaveBeenCalled()
@@ -53,9 +53,7 @@ describe 'Router', ->
 
     describe '#decorate', ->
 
-      Given ->
-        @old = emit: @socket.emit
-        console.log 'socket.emit', @old
+      Given -> @old = emit: @socket.emit
       Given -> spyOn(@old.emit, ['apply']).andCallThrough()
       Given -> @done = (emit, args) => emit.apply(@socket, args)
       When ->
@@ -83,9 +81,9 @@ describe 'Router', ->
       Given -> @c = ->
       Given -> @name = [@a, @b, @c]
       When -> @router.on @name
-      Then -> expect(@router.fns()).toEqual [@a, @b, @c]
+      Then -> expect(@router.fns()).toEqual [[0, @a], [1,@b], [2,@c]]
 
-    describe '#getPath', ->
+    describe '#getPath (name:String)', ->
 
       Given -> @a = ->
       Given -> @b = ->
@@ -93,11 +91,11 @@ describe 'Router', ->
       Given -> @router.on @a
       Given -> @router.on 'event', @b
       Given -> @router.on '*', @c
-      When -> @path = @router.getPath 'event'
+      When -> @path = @router.getPath ['event']
       Then -> expect(@path).toEqual [@a, @b, @c]
 
    describe '#index', ->
 
-     Then -> expect(@router.index()).toBe 1
-     Then -> expect(@router.index()).toBe 2
-     Then -> expect(@router.index()).toBe 3
+     When -> expect(@router.index()).toBe 0
+     When -> expect(@router.index()).toBe 1
+     When -> expect(@router.index()).toBe 2
