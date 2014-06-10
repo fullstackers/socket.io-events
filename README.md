@@ -2,9 +2,9 @@
 [![NPM version](https://badge.fury.io/js/socket.io-event-router.svg)](http://badge.fury.io/js/socket.io-event-router)
 [![David DM](https://david-dm.org/turbonetix/socket.io-event-router.png)](https://david-dm.org/turbonetix/socket.io-event-router.png)
 
-**Router middleware for socket.io**
+**Routing middleware for [socket.io](https://github.com/Automattic/socket.io "socket.io")**
 
-`npm install socket.io-event-router`
+Here is an example of routing an event through middleware.
 
 ```javascript
 
@@ -36,6 +36,27 @@ io.use(router.middleware);
 
 ```
 
+Here is an example of *not* handling a message and letting [socket.io](https://github.com/Automattic/socket.io "socket.io")
+handle things *business as usual*.
+
+```javascript
+
+var router = require('socket.io-event-router')();
+
+router.on(function (socket, args, next) {
+  //do something!
+  next();
+});
+
+var io = require('socket.io')(3000);
+io.use(router.middleware);
+io.on('connection', function (socket) {
+  socket.on('echo', function (data) {
+    socket.emit('echo', data);  
+  });
+});
+
+```
 
 # Installation and Environment Setup
 
