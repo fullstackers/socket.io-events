@@ -27,6 +27,8 @@
     "grunt-cli": "~0.1.13",
     "grunt": "~0.4.5",
     "supertest": "~0.13.0",
-    "request": "~2.36.0"
+    "request": "~2.36.0",
+    "socket.io": "~1.0.4",
+    "socket.io-client": "~1.0.4"
   }
 }
