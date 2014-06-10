@@ -1,6 +1,6 @@
 {
   "name": "socket.io-event-router",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Router middleware for socket.io",
   "main": "index.js",
   "scripts": {
