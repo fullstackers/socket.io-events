@@ -1,5 +1,5 @@
 {
-  "name": "socket.io-router",
+  "name": "socket.io-event-router",
   "version": "0.0.0",
   "description": "Router middleware for socket.io",
   "main": "index.js",
@@ -11,8 +11,9 @@
     "url": "git@github.com:turbonetix/socket.io-router.git"
   },
   "keywords": [
-    "social",
-    "network"
+    "socket.io",
+    "event",
+    "router"
   ],
   "author": "turbonetix",
   "license": "MIT",
