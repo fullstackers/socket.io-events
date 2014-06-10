@@ -70,7 +70,7 @@ Clone this repository
 
 cd into the directory and install the dependencies
 
-    > cd bus.io
+    > cd socket.io-event-router
     > npm install && npm shrinkwrap --dev
 
 # Running Tests

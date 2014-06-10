@@ -1,6 +1,6 @@
 {
   "name": "socket.io-event-router",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Router middleware for socket.io",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "event",
     "router"
   ],
-  "author": "turbonetix",
+  "author": "Nathan G. Romano <nathan.g.romano>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/turbonetix/socket.io-event-router/issues"
