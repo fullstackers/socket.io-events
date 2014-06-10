@@ -1,0 +1,32 @@
+{
+  "name": "socket.io-router",
+  "version": "0.0.0",
+  "description": "Router middleware for socket.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:turbonetix/socket.io-router.git"
+  },
+  "keywords": [
+    "social",
+    "network"
+  ],
+  "author": "turbonetix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turbonetix/socially/issues"
+  },
+  "homepage": "https://github.com/turbonetix/socially",
+  "devDependencies": {
+    "sandboxed-module": "~0.3.0",
+    "grunt-jasmine-bundle": "~0.2.0",
+    "coffee-script": "~1.7.1",
+    "grunt-cli": "~0.1.13",
+    "grunt": "~0.4.5",
+    "supertest": "~0.13.0",
+    "request": "~2.36.0"
+  }
+}
