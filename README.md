@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/turbonetix/socket.io-middleware.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-middleware)
 
+(In Alpha)
+
 Router middleware for socket.io
 
 # Installation and Environment Setup
