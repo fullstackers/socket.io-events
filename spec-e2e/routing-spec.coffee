@@ -22,7 +22,7 @@ describe 'when a router receives some event it should route it to a handler', ->
 
   Given ->
     @io = require('socket.io')(3000)
-    @io.use @router
+    @io.use @router.middleware
 
   Given -> @message = 'Hello, World'
 
