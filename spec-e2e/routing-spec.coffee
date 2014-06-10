@@ -13,7 +13,7 @@ describe 'when a router receives some event it should route it to a handler', ->
     @router.on 'some event', (socket, args, next) ->
       @bar()
       next()
-    @router.on 'some*', (socket, args, next) ->
+    @router.on '*', (socket, args, next) ->
       @bas()
       socket.emit.apply(socket, args)
     @router.on 'some event', (socket, args, next) ->
@@ -28,7 +28,7 @@ describe 'when a router receives some event it should route it to a handler', ->
 
   When (done) ->
     @socket = require('socket.io-client').connect('ws://localhost:3000')
-    @socket.on 'connect', =>
+    @socket.on 'connect', ->
       @socket.emit 'some event', @message
     @socket.on 'some event', (message) ->
       @res = message

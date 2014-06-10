@@ -63,3 +63,41 @@ describe 'Router', ->
         @socket.emit 'hello'
       Then -> expect(@old.emit.apply).toHaveBeenCalledWith @socket, ['hello']
 
+    describe '#on (fn:Function)', ->
+
+      Given -> @fn = (socket, args, next) ->
+      When -> @router.on @fn
+      Then -> expect(@router.fns().length).toBe 1
+
+    describe '#on (name:String,fn:Function)', ->
+
+      Given -> @name = 'name'
+      Given -> @fn = (socket, args, next) ->
+      When -> @router.on @name, @fn
+      Then -> expect(@router.fns(@name).length).toBe 1
+
+    describe '#on (name:Array)', ->
+
+      Given -> @a = ->
+      Given -> @b = ->
+      Given -> @c = ->
+      Given -> @name = [@a, @b, @c]
+      When -> @router.on @name
+      Then -> expect(@router.fns()).toEqual [@a, @b, @c]
+
+    describe '#getPath', ->
+
+      Given -> @a = ->
+      Given -> @b = ->
+      Given -> @c = ->
+      Given -> @router.on @a
+      Given -> @router.on 'event', @b
+      Given -> @router.on '*', @c
+      When -> @path = @router.getPath 'event'
+      Then -> expect(@path).toEqual [@a, @b, @c]
+
+   describe '#index', ->
+
+     Then -> expect(@router.index()).toBe 1
+     Then -> expect(@router.index()).toBe 2
+     Then -> expect(@router.index()).toBe 3
