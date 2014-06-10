@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/turbonetix/socially.svg?branch=master)](https://travis-ci.org/turbonetix/socially)
+[![Build Status](https://travis-ci.org/turbonetix/socket.io-middleware.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-middleware)
 
 Router middleware for socket.io
 
