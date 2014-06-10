@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/turbonetix/socket.io-event-router.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-event-router)
+[![NPM version](https://badge.fury.io/js/socket.io-event-router.svg)](http://badge.fury.io/js/socket.io-event-router)
+[![David DM](https://david-dm.org/turbonetix/socket.io-event-router.png)](https://david-dm.org/turbonetix/socket.io-event-router.png)
 
 **Router middleware for socket.io**
 
