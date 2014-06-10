@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/turbonetix/socket.io-middleware.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-middleware)
+[![Build Status](https://travis-ci.org/turbonetix/socket.io-event-router.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-event-router)
 
 (In Alpha)
 
@@ -12,7 +12,7 @@ Install redis (See download and install instructions http://redis.io/topics/quic
 
 Clone this repository
 
-    > git clone git@github.com:turbonetix/socket.io-router.git
+    > git clone git@github.com:turbonetix/socket.io-event-router.git
 
 cd into the directory and install the dependencies
 
