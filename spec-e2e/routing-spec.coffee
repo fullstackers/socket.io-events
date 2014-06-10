@@ -4,19 +4,18 @@ describe 'when a router receives some event it should route it to a handler', ->
   Given -> @bar = jasmine.createSpy 'bar'
   Given -> @baz = jasmine.createSpy 'baz'
   Given -> @no = jasmine.createSpy 'no'
-
   Given ->
     @router = require('./..')()
-    @router.on (socket, args, next) ->
+    @router.on (socket, args, next) =>
       @foo()
       next()
-    @router.on 'some event', (socket, args, next) ->
+    @router.on 'some event', (socket, args, next) =>
       @bar()
       next()
-    @router.on '*', (socket, args, next) ->
-      @bas()
+    @router.on '*', (socket, args, next) =>
+      @baz()
       socket.emit.apply(socket, args)
-    @router.on 'some event', (socket, args, next) ->
+    @router.on 'some event', (socket, args, next) =>
       @no()
       next()
 
@@ -28,17 +27,14 @@ describe 'when a router receives some event it should route it to a handler', ->
 
   When (done) ->
     @socket = require('socket.io-client').connect('ws://localhost:3000')
-    @socket.on 'connect', ->
+    @socket.on 'connect', =>
       @socket.emit 'some event', @message
-    @socket.on 'some event', (message) ->
+    @socket.on 'some event', (message) =>
       @res = message
       done()
 
   Then -> expect(@res).toEqual @message
-  And -> expect(@bas).toHaveBeenCalled()
+  And -> expect(@baz).toHaveBeenCalled()
   And -> expect(@bar).toHaveBeenCalled()
   And -> expect(@foo).toHaveBeenCalled()
   And -> expect(@no).not.toHaveBeenCalled()
-
- 
-

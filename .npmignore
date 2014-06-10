@@ -2,3 +2,6 @@ demo
 test
 spec
 spec-e2e
+examples
+.travis.yml
+Gruntfile.coffee
