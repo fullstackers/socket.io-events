@@ -2,13 +2,13 @@
 [![NPM version](https://badge.fury.io/js/socket.io-event-router.svg)](http://badge.fury.io/js/socket.io-event-router)
 [![David DM](https://david-dm.org/turbonetix/socket.io-event-router.png)](https://david-dm.org/turbonetix/socket.io-event-router.png)
 
-**Routing middleware for [socket.io](https://github.com/Automattic/socket.io "socket.io")**
+**event handling middleware for [socket.io](https://github.com/Automattic/socket.io "socket.io")**
 
 Here is an example of routing an event through middleware.
 
 ```javascript
 
-var router = require('socket.io-event-router')();
+var router = require('socket.io-events')();
 
 // gets all events here
 router.on(function (socket, args, next) {
@@ -41,7 +41,7 @@ handle things *business as usual*.
 
 ```javascript
 
-var router = require('socket.io-event-router')();
+var router = require('socket.io-events')();
 
 router.on(function (socket, args, next) {
   //do something!
@@ -64,11 +64,11 @@ Install node.js (See download and install instructions here: http://nodejs.org/)
 
 Clone this repository
 
-    > git clone git@github.com:turbonetix/socket.io-event-router.git
+    > git clone git@github.com:turbonetix/socket.io-events.git
 
 cd into the directory and install the dependencies
 
-    > cd socket.io-event-router
+    > cd socket.io-eventst
     > npm install && npm shrinkwrap --dev
 
 # Running Tests

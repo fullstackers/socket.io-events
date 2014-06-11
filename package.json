@@ -1,14 +1,14 @@
 {
-  "name": "socket.io-event-router",
-  "version": "0.0.6",
-  "description": "Router middleware for socket.io",
+  "name": "socket.io-events",
+  "version": "0.0.1",
+  "description": "event handling middleware for socket.io",
   "main": "index.js",
   "scripts": {
     "test": "grunt"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:turbonetix/socket.io-router.git"
+    "url": "git@github.com:turbonetix/socket.io-events.git"
   },
   "keywords": [
     "socket.io",
@@ -18,9 +18,9 @@
   "author": "Nathan G. Romano <nathan.g.romano>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/turbonetix/socket.io-event-router/issues"
+    "url": "https://github.com/turbonetix/socket.io-event/issues"
   },
-  "homepage": "https://github.com/turbonetix/socket.io-event-router",
+  "homepage": "https://github.com/turbonetix/socket.io-events",
   "devDependencies": {
     "sandboxed-module": "~0.3.0",
     "grunt-jasmine-bundle": "~0.2.0",
