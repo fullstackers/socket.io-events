@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/turbonetix/socket.io-event-router.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-event-router)
-[![NPM version](https://badge.fury.io/js/socket.io-event-router.svg)](http://badge.fury.io/js/socket.io-event-router)
-[![David DM](https://david-dm.org/turbonetix/socket.io-event-router.png)](https://david-dm.org/turbonetix/socket.io-event-router.png)
+[![Build Status](https://travis-ci.org/turbonetix/socket.io-events.svg?branch=master)](https://travis-ci.org/turbonetix/socket.io-events)
+[![NPM version](https://badge.fury.io/js/socket.io-events.svg)](http://badge.fury.io/js/socket.io-events)
+[![David DM](https://david-dm.org/turbonetix/socket.io-events.png)](https://david-dm.org/turbonetix/socket.io-events.png)
 
 **event handling middleware for [socket.io](https://github.com/Automattic/socket.io "socket.io")**
 
