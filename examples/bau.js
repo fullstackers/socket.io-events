@@ -8,7 +8,7 @@ router.on(function (socket, args, next) {
 });
 
 var io = require('socket.io')(3000);
-io.use(router.middleware);
+io.use(router);
 io.on('connection', function (socket) {
   socket.on('echo', function (data) {
     socket.emit('echo', data);  

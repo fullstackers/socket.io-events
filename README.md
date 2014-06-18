@@ -32,7 +32,7 @@ router.on(function (socket, args) {
 });
 
 var io = require('socket.io')(3000);
-io.use(router.middleware);
+io.use(router);
 
 ```
 

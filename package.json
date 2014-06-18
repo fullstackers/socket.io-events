@@ -1,6 +1,6 @@
 {
   "name": "socket.io-events",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "event handling middleware for socket.io",
   "main": "index.js",
   "scripts": {

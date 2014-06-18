@@ -5,7 +5,11 @@ describe 'Router', ->
   Given -> @Router = requireSubject 'lib/router', {}
 
   describe '#', ->
-    Then -> expect(@Router() instanceof @Router).toBe true
+    Given -> @res = @Router()
+    Given -> spyOn(@res,'middleware')
+    When -> @res()
+    Then -> expect(@res instanceof @Router).toBe true
+    And -> expect(@res.middleware).toHaveBeenCalled()
   
   describe 'prototype', ->
 
