@@ -1,7 +1,7 @@
 {
   "name": "socket.io-events",
-  "version": "0.1.0",
-  "description": "event handling middleware for socket.io",
+  "version": "0.2.0",
+  "description": "Power your socket.io apps with express like event routing.",
   "main": "index.js",
   "scripts": {
     "test": "grunt"
