@@ -13,7 +13,8 @@
   "keywords": [
     "socket.io",
     "event",
-    "router"
+    "router",
+    "middleware"
   ],
   "author": "Nathan G. Romano <nathan.g.romano>",
   "license": "MIT",

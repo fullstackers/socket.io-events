@@ -21,12 +21,14 @@ router.on('some event', function (socket, args, next) {
 
 // handles all events
 router.on(function (socket, args) {
-  //emits back to the client, and ends the chain.  Think `res.end()` for express.
+  //emits back to the client, and ends the chain.  
+  //Think `res.end()` for express.
   socket.emit(args.shift(), args);
 });
 
 router.on(function (socket, args) {
-  //this wont fire because socket.emit() has been called which is like `res.end()` in express.
+  //this wont fire because socket.emit() 
+  //has been called which is like `res.end()` in express.
 });
 
 var io = require('socket.io')(3000);
