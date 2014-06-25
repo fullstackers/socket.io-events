@@ -21,6 +21,7 @@ describe 'Router', ->
     describe '#middleware', ->
 
       Given -> @cb = jasmine.createSpy 'cb'
+      Given -> @router.middleware @socket, @cb
       When -> @router.middleware @socket, @cb
       Then -> expect(@socket.onevent).toEqual @router.onEvent
       And -> expect(@cb).toHaveBeenCalled()
@@ -36,16 +37,27 @@ describe 'Router', ->
       Then -> expect(@socket.ack).toHaveBeenCalledWith @packet.id
       And -> expect(@router.onRoute).toHaveBeenCalledWith @socket, ['message', 'hello', @fn]
 
-    describe '#onRoute', ->
+    describe.only '#onRoute', ->
 
+      Given -> @order = []
       Given -> @a = jasmine.createSpy 'a'
       Given -> @b = jasmine.createSpy 'b'
       Given -> @c = jasmine.createSpy 'c'
-      Given -> @foo = (socket, args, next) => @a(); next()
-      Given -> @bar = (socket, args, next) => @b(); next()
-      Given -> @baz = (socket, args, next) => @c(); next()
-      Given -> @path = [@foo, @bar, @baz]
-      Given -> spyOn(@router,['getPath']).andReturn(@path)
+      Given -> @d = jasmine.createSpy 'd'
+      Given -> @e = jasmine.createSpy 'e'
+      Given -> @f = jasmine.createSpy 'f'
+      Given -> @error = new Error 'something wrong'
+      Given -> @foo = (socket, args, next) => @a(); @order.push('a'); next()
+      Given -> @bar = (socket, args, next) => @b(); @order.push('b'); next()
+      Given -> @baz = (socket, args, next) => @c(); @order.push('c'); next @error 
+      Given -> @err = (err, socket, args, next) =>
+        console.error 'what is the err? ', err
+        @d err; @order.push('d'); next err
+      Given -> @err1 = (err, socket, args, next) => @e err; @order.push('e'); next()
+      Given -> @cra = (socket, args, next) => @f(); @order.push('f'); next()
+      Given -> @path = [@foo, @bar, @err, @baz, @err1, @cra]
+      Given -> @router.on @path
+      Given -> spyOn(@router,['getPath']).andCallThrough()
       Given -> spyOn(@router,['decorate']).andCallThrough()
       Given -> @args = ['message', 'hello', @fn]
       When -> @router.onRoute @socket, @args
@@ -54,6 +66,10 @@ describe 'Router', ->
       And -> expect(@a).toHaveBeenCalled()
       And -> expect(@b).toHaveBeenCalled()
       And -> expect(@c).toHaveBeenCalled()
+      And -> expect(@d).toHaveBeenCalledWith @error
+      And -> expect(@e).toHaveBeenCalledWith @error
+      And -> expect(@f).toHaveBeenCalled()
+      And -> expect(@order).toEqual ['a', 'b', 'c', 'd', 'e', 'f']
 
     describe '#decorate', ->
 
@@ -85,7 +101,7 @@ describe 'Router', ->
       Given -> @c = ->
       Given -> @name = [@a, @b, @c]
       When -> @router.on @name
-      Then -> expect(@router.fns()).toEqual [[0, @a], [1,@b], [2,@c]]
+      Then -> expect(@router.fns()).toEqual [[0,@a], [1,@b], [2,@c]]
 
     describe '#getPath (name:String)', ->
 

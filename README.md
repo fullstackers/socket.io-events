@@ -49,11 +49,27 @@ router.on(function (socket, args, next) {
 });
 
 var io = require('socket.io')(3000);
-io.use(router.middleware);
+io.use(router);
 io.on('connection', function (socket) {
   socket.on('echo', function (data) {
     socket.emit('echo', data);  
   });
+});
+
+```
+
+Here is an example of calling `next()` with an `Error` object, and having an error handler capture it.
+
+```javascript
+
+var router = require('socket.io-events')();
+
+router.on('some event', function (socket, args, next) {
+  next(new Error('something wrong');
+});
+
+router.on(function (err, socket, args, next) {
+  socket.emit('error', err);
 });
 
 ```
