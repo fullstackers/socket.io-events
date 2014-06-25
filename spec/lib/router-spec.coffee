@@ -37,7 +37,7 @@ describe 'Router', ->
       Then -> expect(@socket.ack).toHaveBeenCalledWith @packet.id
       And -> expect(@router.onRoute).toHaveBeenCalledWith @socket, ['message', 'hello', @fn]
 
-    describe.only '#onRoute', ->
+    describe '#onRoute', ->
 
       Given -> @order = []
       Given -> @a = jasmine.createSpy 'a'
