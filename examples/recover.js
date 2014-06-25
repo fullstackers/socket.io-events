@@ -7,8 +7,14 @@ router.on(function (socket, args, next) {
   next();
 });
 
-// handle events named 'some event'
+// gets 'some event'
 router.on('some event', function (socket, args, next) {
+  next(new Error('something wrong'));
+});
+
+// handle the error
+router.on(function (err, socket, args, next) {
+  //handled the error!
   next();
 });
 
@@ -16,10 +22,6 @@ router.on('some event', function (socket, args, next) {
 router.on(function (socket, args) {
   //emits back to the client
   socket.emit(args.shift(), args);
-});
-
-router.on(function (socket, args) {
-  //this wont fire because socket.emit() has been called which is like `res.end()` in express.
 });
 
 var io = require('socket.io')(3000);
