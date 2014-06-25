@@ -9,6 +9,7 @@ router.on(function (socket, args, next) {
 
 // handle events named 'some event'
 router.on('some event', function (socket, args, next) {
+  ok(args[0],'some event');
   next();
 });
 
