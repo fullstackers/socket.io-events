@@ -50,9 +50,7 @@ describe 'Router', ->
       Given -> @foo = (socket, args, next) => @a(); @order.push('a'); next()
       Given -> @bar = (socket, args, next) => @b(); @order.push('b'); next()
       Given -> @baz = (socket, args, next) => @c(); @order.push('c'); next @error 
-      Given -> @err = (err, socket, args, next) =>
-        console.error 'what is the err? ', err
-        @d err; @order.push('d'); next err
+      Given -> @err = (err, socket, args, next) => @d err; @order.push('d'); next err
       Given -> @err1 = (err, socket, args, next) => @e err; @order.push('e'); next()
       Given -> @cra = (socket, args, next) => @f(); @order.push('f'); next()
       Given -> @path = [@foo, @bar, @err, @baz, @err1, @cra]
@@ -66,10 +64,10 @@ describe 'Router', ->
       And -> expect(@a).toHaveBeenCalled()
       And -> expect(@b).toHaveBeenCalled()
       And -> expect(@c).toHaveBeenCalled()
-      And -> expect(@d).toHaveBeenCalledWith @error
+      And -> expect(@d).not.toHaveBeenCalled()
       And -> expect(@e).toHaveBeenCalledWith @error
       And -> expect(@f).toHaveBeenCalled()
-      And -> expect(@order).toEqual ['a', 'b', 'c', 'd', 'e', 'f']
+      And -> expect(@order).toEqual ['a', 'b', 'c', 'e', 'f']
 
     describe '#decorate', ->
 
