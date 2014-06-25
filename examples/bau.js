@@ -23,6 +23,7 @@ setTimeout(function () {
   });
   client.on('echo', function(data) {
     ok(data,'data');
+    console.log('we good');
     process.exit();
   });
 
