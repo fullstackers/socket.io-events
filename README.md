@@ -4,6 +4,26 @@
 
 Power your [socket.io](https://github.com/Automattic/socket.io "socket.io") apps with [express](https://github.com/visionmedia/express "express") like `event` routing.
 
+`$ npm install socket.io-events`
+
+```javascript
+var io = require('socket.io')(3000);
+var router = require('socket.io-events')();
+router.on('*', function (sock, args, next) {
+  var name = args.shift(), msg = args.shift();
+  sock.emit('received event', name, msg);
+});
+io.use(router);
+```
+
+# Features
+
+* Easy to use interface for manipulating socket.io events.
+* Express-like routing capabilties for socket.io events.
+* Gives you more control over how events are handled.
+
+# Examples
+
 ```javascript
 var assert = require('assert');
 var router = require('socket.io-events')();
