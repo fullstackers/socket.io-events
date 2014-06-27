@@ -95,6 +95,13 @@ describe 'Router', ->
       When -> @router.use @fn
       Then -> expect(@router.fns().length).toBe 1
 
+    describe '#use (router:Router)', ->
+
+      Given -> @a = @Router()
+      When -> @router.use @a
+      Then -> expect(@router.fns().length).toBe 1
+      And -> expect(@router.fns()[0][1]).toEqual @a.onRoute
+
     describe '#use (name:String,fn:Function)', ->
 
       Given -> @name = 'name'
