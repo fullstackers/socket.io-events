@@ -21,6 +21,7 @@ io.use(router);
 * Easy to use interface for manipulating socket.io events.
 * Express-like routing capabilties for socket.io events.
 * Gives you more control over how events are handled.
+* Attach `Router` instances to other `Router` instances.
 
 # Examples
 
@@ -111,6 +112,23 @@ router.on(function (socket, args, next) {
 });
 
 io.use(router);
+```
+
+You can even attach a `Router' intance to another `Router` intance.
+
+```javascript
+var Router = require('socket.io-events')();
+
+var a = Router();
+a.use(function (sock, args, next) { next() });
+
+var b = Router();
+b.use(function (sock, args, next) { next() });
+
+a.use(b)
+
+var io = require('socket.io')(3000);
+io.use(a);
 ```
 
 # Installation and Environment Setup
