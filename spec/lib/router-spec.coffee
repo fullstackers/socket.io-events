@@ -35,7 +35,7 @@ describe 'Router', ->
       Given -> @packet = id:1, data: ['message', 'hello']
       When -> @router.onEvent.call @socket, @packet
       Then -> expect(@socket.ack).toHaveBeenCalledWith @packet.id
-      And -> expect(@router.onRoute).toHaveBeenCalledWith @socket, ['message', 'hello', @fn]
+      And -> expect(@router.onRoute).toHaveBeenCalledWith null, @socket, ['message', 'hello', @fn]
 
     describe '#onRoute', ->
 
@@ -58,7 +58,7 @@ describe 'Router', ->
       Given -> spyOn(@router,['getPath']).andCallThrough()
       Given -> spyOn(@router,['decorate']).andCallThrough()
       Given -> @args = ['message', 'hello', @fn]
-      When -> @router.onRoute @socket, @args
+      When -> @router.onRoute null, @socket, @args
       Then -> expect(@router.getPath).toHaveBeenCalledWith @args[0]
       And -> expect(@router.decorate).toHaveBeenCalledWith @socket, jasmine.any(Function)
       And -> expect(@a).toHaveBeenCalled()
