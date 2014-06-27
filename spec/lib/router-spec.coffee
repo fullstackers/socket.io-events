@@ -54,7 +54,7 @@ describe 'Router', ->
       Given -> @err1 = (err, socket, args, next) => @e err; @order.push('e'); next()
       Given -> @cra = (socket, args, next) => @f(); @order.push('f'); next()
       Given -> @path = [@foo, @bar, @err, @baz, @err1, @cra]
-      Given -> @router.on @path
+      Given -> @router.use @path
       Given -> spyOn(@router,['getPath']).andCallThrough()
       Given -> spyOn(@router,['decorate']).andCallThrough()
       Given -> @args = ['message', 'hello', @fn]
@@ -79,26 +79,31 @@ describe 'Router', ->
         @socket.emit 'hello'
       Then -> expect(@old.emit.apply).toHaveBeenCalledWith @socket, ['hello']
 
-    describe '#on (fn:Function)', ->
+    describe '#use', ->
+
+      Given -> @test = => @router.use()
+      Then -> expect(@test).toThrow new Error 'expecting at least one parameter'
+
+    describe '#use (fn:Function)', ->
 
       Given -> @fn = (socket, args, next) ->
-      When -> @router.on @fn
+      When -> @router.use @fn
       Then -> expect(@router.fns().length).toBe 1
 
-    describe '#on (name:String,fn:Function)', ->
+    describe '#use (name:String,fn:Function)', ->
 
       Given -> @name = 'name'
       Given -> @fn = (socket, args, next) ->
-      When -> @router.on @name, @fn
+      When -> @router.use @name, @fn
       Then -> expect(@router.fns(@name).length).toBe 1
 
-    describe '#on (name:Array)', ->
+    describe '#use (name:Array)', ->
 
       Given -> @a = ->
       Given -> @b = ->
       Given -> @c = ->
       Given -> @name = [@a, @b, @c]
-      When -> @router.on @name
+      When -> @router.use @name
       Then -> expect(@router.fns()).toEqual [[0,@a], [1,@b], [2,@c]]
 
     describe '#getPath (name:String)', ->
@@ -106,9 +111,9 @@ describe 'Router', ->
       Given -> @a = ->
       Given -> @b = ->
       Given -> @c = ->
-      Given -> @router.on @a
-      Given -> @router.on 'event', @b
-      Given -> @router.on '*', @c
+      Given -> @router.use @a
+      Given -> @router.use 'event', @b
+      Given -> @router.use '*', @c
       When -> @path = @router.getPath ['event']
       Then -> expect(@path).toEqual [@a, @b, @c]
 
