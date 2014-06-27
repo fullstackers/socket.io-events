@@ -1,64 +1,103 @@
-describe 'when a router receives some event it should route it to a handler', ->
+describe 'event routing', ->
 
-  Given -> @foo = jasmine.createSpy 'foo'
-  Given -> @bar = jasmine.createSpy 'bar'
-  Given -> @baz = jasmine.createSpy 'baz'
-  Given -> @no = jasmine.createSpy 'no'
-  Given ->
-    @router = require('./..')()
-    @router.on (socket, args, next) =>
-      @foo()
-      next()
-    @router.on 'some event', (socket, args, next) =>
-      @bar()
-      next()
-    @router.on '*', (socket, args, next) =>
-      @baz()
-      socket.emit.apply(socket, args)
-    @router.on 'some event', (socket, args, next) =>
-      @no()
-      next()
+  describe 'when a router receives some event it should route it to a handler', ->
 
-  Given ->
-    @io = require('socket.io')(3000)
-    @io.use @router.middleware
+    Given -> @foo = jasmine.createSpy 'foo'
+    Given -> @bar = jasmine.createSpy 'bar'
+    Given -> @baz = jasmine.createSpy 'baz'
+    Given -> @no = jasmine.createSpy 'no'
+    Given ->
+      @router = require('./..')()
+      @router.on (socket, args, next) =>
+        @foo()
+        next()
+      @router.on 'some event', (socket, args, next) =>
+        @bar()
+        next()
+      @router.on '*', (socket, args, next) =>
+        @baz()
+        socket.emit.apply(socket, args)
+      @router.on 'some event', (socket, args, next) =>
+        @no()
+        next()
 
-  Given -> @message = 'Hello, World'
+    Given ->
+      @io = require('socket.io')(3000)
+      @io.use @router.middleware
 
-  When (done) ->
-    @socket = require('socket.io-client').connect('ws://localhost:3000')
-    @socket.on 'connect', =>
-      @socket.emit 'some event', @message
-    @socket.on 'some event', (message) =>
-      @res = message
-      done()
+    Given -> @message = 'Hello, World'
 
-  Then -> expect(@res).toEqual @message
-  And -> expect(@baz).toHaveBeenCalled()
-  And -> expect(@bar).toHaveBeenCalled()
-  And -> expect(@foo).toHaveBeenCalled()
-  And -> expect(@no).not.toHaveBeenCalled()
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3000')
+      @socket.on 'connect', =>
+        @socket.emit 'some event', @message
+      @socket.on 'some event', (message) =>
+        @res = message
+        done()
 
-describe 'when a router receives some event and it is not handle business as usual', ->
+    Then -> expect(@res).toEqual @message
+    And -> expect(@baz).toHaveBeenCalled()
+    And -> expect(@bar).toHaveBeenCalled()
+    And -> expect(@foo).toHaveBeenCalled()
+    And -> expect(@no).not.toHaveBeenCalled()
 
-  Given ->
-    @router = require('./..')()
-    @router.on (socket, args, next) -> next()
+  describe 'when a router receives some event and it is not handle business as usual', ->
 
-  Given ->
-    @io = require('socket.io')(3001)
-    @io.use @router.middleware
-    @io.on 'connect', (socket) ->
-      socket.on 'echo', (data) ->
-        socket.emit 'echo', data
+    Given ->
+      @router = require('./..')()
+      @router.on (socket, args, next) -> next()
 
-  Given -> @message = 'Hello, World'
+    Given ->
+      @io = require('socket.io')(3001)
+      @io.use @router.middleware
+      @io.on 'connect', (socket) ->
+        socket.on 'echo', (data) ->
+          socket.emit 'echo', data
 
-  When (done) ->
-    @socket = require('socket.io-client').connect('ws://localhost:3001')
-    @socket.on 'connect', =>
-      @socket.emit 'echo', @message
-    @socket.on 'echo', (message) =>
-      @res = message
-      done()
-  Then -> expect(@res).toEqual @message
+    Given -> @message = 'Hello, World'
+
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3001')
+      @socket.on 'connect', =>
+        @socket.emit 'echo', @message
+      @socket.on 'echo', (message) =>
+        @res = message
+        done()
+    Then -> expect(@res).toEqual @message
+
+  describe.only 'multiple routers attached to the same socket.io instance should work together', ->
+
+    Given -> @stack = []
+
+    Given ->
+      @a = require('./..')()
+      @a.on (socket, args, next) => @stack.push('a'); next()
+
+    Given ->
+      @b = require('./..')()
+      @b.on (socket, args, next) => @stack.push('b'); next()
+
+    Given ->
+      @c = require('./..')()
+      @d.on (socket, args, next) => @stack.push('c'); next()
+
+    Given ->
+      @io = require('socket.io')(3002)
+      @io.use @a
+      @io.use @b
+      @io.use @c
+      @io.on 'connect', (socket) ->
+        socket.on 'echo', (data) ->
+          socket.emit 'echo', data
+
+    Given -> @message = 'Hello, World'
+
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3002')
+      @socket.on 'connect', =>
+        @socket.emit 'echo', @message
+      @socket.on 'echo', (message) =>
+        @res = message
+        done()
+    Then -> expect(@res).toEqual @message
+    And -> expect(@stack).toEqual ['a', 'b', 'c']
