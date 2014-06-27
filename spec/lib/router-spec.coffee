@@ -86,7 +86,7 @@ describe 'Router', ->
 
     describe '#use (name:Sring)', ->
 
-      Given -> @test = => @router.use 'name'
+      Given -> @test = => @router.use 'some event'
       Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
 
     describe '#use (fn:Function)', ->
@@ -110,6 +110,10 @@ describe 'Router', ->
       Given -> @name = [@a, @b, @c]
       When -> @router.use @name
       Then -> expect(@router.fns()).toEqual [[0,@a], [1,@b], [2,@c]]
+
+    describe '#on', ->
+
+      Then -> expect(@router.on).toEqual @router.use
 
     describe '#getPath (name:String)', ->
 
