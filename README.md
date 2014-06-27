@@ -24,6 +24,8 @@ io.use(router);
 
 # Examples
 
+The method `on` is an alias to `use`.
+
 ```javascript
 var assert = require('assert');
 var router = require('socket.io-events')();
