@@ -84,6 +84,11 @@ describe 'Router', ->
       Given -> @test = => @router.use()
       Then -> expect(@test).toThrow new Error 'expecting at least one parameter'
 
+    describe '#use (name:Sring)', ->
+
+      Given -> @test = => @router.use 'name'
+      Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
+
     describe '#use (fn:Function)', ->
 
       Given -> @fn = (socket, args, next) ->
