@@ -141,13 +141,19 @@ describe 'routing events', ->
 
      Then -> expect(@res).toEqual 'play nice'
 
-  describe 'should support wild cards', ->
+  describe 'should support wild cards and regex', ->
 
     Given -> @hit = 0
 
     Given ->
       @a = require('./..')()
       @a.on 'some*', (sock, args, next) =>
+        @hit++
+        next()
+      @a.on '*event', (sock, args, next) =>
+        @hit++
+        next()
+      @a.on '[\w\s]+', (sock, args, next) =>
         @hit++
         next()
 
@@ -165,4 +171,4 @@ describe 'routing events', ->
       @socket.on 'some event', ->
         done()
 
-    Then -> expect(@hit).toBe 1
+    Then -> expect(@hit).toBe 3
