@@ -219,4 +219,13 @@ describe 'Router', ->
       When -> @res = @router.fns @name
       Then -> expect(@res).toEqual []
 
+    describe '#fns (name:String="tester")', ->
+
+      Given -> @a = jasmine.createSpy 'a'
+      Given -> @b = jasmine.createSpy 'b'
+      Given -> @router.use 'test*', @a
+      Given -> @router.use 'tes*', @b
+      Given -> @name = 'tester'
+      When -> @res = @router.fns @name
+      Then -> expect(@res).toEqual [@a, @b]
      
