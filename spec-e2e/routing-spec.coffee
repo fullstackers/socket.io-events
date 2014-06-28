@@ -140,3 +140,29 @@ describe 'routing events', ->
         done()
 
      Then -> expect(@res).toEqual 'play nice'
+
+  describe 'should support wild cards', ->
+
+    Given -> @hit = 0
+
+    Given ->
+      @a = require('./..')()
+      @a.on 'some*', (socket, args, next) =>
+        @hit++
+
+    Given ->
+      @io = require('socket.io')(3004)
+      @io.use @a
+      @io.use @b
+      @io.on 'connect', (socket) ->
+        socket.on 'some event', () ->
+          socket.emit 'some event', new Date
+
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3004')
+      @socket.on 'connect', =>
+        @socket.emit 'some event', @message
+      @socket.on 'some event', (time) =>
+        done()
+
+    Then -> expect(@hit).toBe 1
