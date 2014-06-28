@@ -192,14 +192,24 @@ describe 'Router', ->
 
     describe '#getPath (name:String)', ->
 
-      Given -> @a = ->
-      Given -> @b = ->
-      Given -> @c = ->
-      Given -> @router.use @a
-      Given -> @router.use 'event', @b
-      Given -> @router.use '*', @c
-      When -> @path = @router.getPath ['event']
-      Then -> expect(@path).toEqual [@a, @b, @c]
+      Given -> @a = jasmine.createSpy 'a'
+      Given -> @b = jasmine.createSpy 'b'
+      Given -> @c = jasmine.createSpy 'c'
+      Given -> @router.use 'test*', @a
+      Given -> @router.use 'tes*', @b
+      Given -> @router.use 't*r', @c
+
+      describe 'name matches', ->
+
+        Given -> @name = 'tester'
+        When -> @res = @router.getPath @name
+        Then -> expect(@res).toEqual [@a, @b, @c]
+
+      describe 'name does not matches', ->
+
+        Given -> @name = 'sleeper'
+        When -> @res = @router.getPath @name
+        Then -> expect(@res).toEqual []
 
     describe '#index', ->
 
@@ -211,7 +221,7 @@ describe 'Router', ->
 
       Given -> console.log @router
       When -> @res = @router.fns()
-      Then -> expect(@res).toEqual {}
+      Then -> expect(@res).toEqual []
 
     describe '#fns (name:String="test")', ->
 
