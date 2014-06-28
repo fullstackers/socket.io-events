@@ -105,3 +105,38 @@ describe 'routing events', ->
         done()
     Then -> expect(@res).toEqual @message
     And -> expect(@hit).toBe 2
+
+  describe 'two routers side by side should dwork together', ->
+
+    Given ->
+      @a = require('./..')()
+      @a.on (socket, args, next) =>
+        args.pop()
+        debug('handler "a" socket.id %s args %s typeof next', socket.id, args, typeof next)
+        args.push('play')
+        next()
+
+    Given ->
+      @b = require('./..')()
+      @b.on (socket, args, next) =>
+        debug('handler "b" socket.id %s args %s typeof next', socket.id, args, typeof next)
+        args.push('nice')
+        next()
+
+    Given ->
+      @io = require('socket.io')(3003)
+      @io.use @a
+      @io.use @b
+      @io.on 'connect', (socket) ->
+        socket.on 'echo', (play, nice) ->
+          socket.emit 'echo', play, nice
+
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3003')
+      @socket.on 'connect', =>
+        @socket.emit 'echo', @message
+      @socket.on 'echo', (play, nice) =>
+        @res = play + ' ' + nice
+        done()
+
+     Then -> expect(@res).toEqual 'play nice'
