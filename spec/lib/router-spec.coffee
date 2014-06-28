@@ -219,7 +219,6 @@ describe 'Router', ->
 
     describe '#fns', ->
 
-      Given -> console.log @router
       When -> @res = @router.fns()
       Then -> expect(@res).toEqual []
 
@@ -228,3 +227,8 @@ describe 'Router', ->
       Given -> @name = 'test'
       When -> @res = @router.fns @name
       Then -> expect(@res).toEqual []
+
+    describe '#_fns', ->
+
+      When -> @res = @router._fns()
+      Then -> expect(@res).toEqual {}
