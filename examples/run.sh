@@ -7,3 +7,5 @@ echo 'testing recover'
 node recover
 echo 'testing routers attached to routers'
 node multiple
+echo 'testing routers next to eachother'
+node sibilings
