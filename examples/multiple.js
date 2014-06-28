@@ -38,6 +38,7 @@ var io = require('socket.io')(3000);
 io.use(a);
 io.on('connection', function (sock) {
   sock.on('say', function (hello, world, good, bye, exclamation) {
+    debug('the socket emit function????', sock.emit.toString());
     sock.emit('say', hello, world, good, bye, exclamation);
   });
 });
