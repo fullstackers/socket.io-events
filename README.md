@@ -23,6 +23,7 @@ io.use(router);
 * Gives you more control over how events are handled.
 * Attach `Router` instances to other `Router` instances.
 * Support for "wildcard" (*) and Regular Expression matching.
+* Event consumption and propagation.
 
 # Examples
 
@@ -61,6 +62,8 @@ router.on(/^\w+/, function (socket, args, next) {
 router.on(function (socket, args) {
   //emits back to the client, and ends the chain.  
   //Think `res.end()` for express.
+  //calling `emit()` consumes the event which means no other handlers
+  //get a chance to process it.
   socket.emit(args.shift(), args);
 });
 
@@ -73,14 +76,14 @@ var io = require('socket.io')(3000);
 io.use(router);
 ```
 
-Here is an example of *not* handling a message and letting [socket.io](https://github.com/Automattic/socket.io "socket.io")
+Here is an example of *not* consuming the event and letting [socket.io](https://github.com/Automattic/socket.io "socket.io")
 handle things *business as usual*.
 
 ```javascript
 
 var router = require('socket.io-events')();
 router.on(function (socket, args, next) {
-  //do something!
+  //do something, but don't consume it.
   next();
 });
 
