@@ -201,8 +201,22 @@ describe 'Router', ->
       When -> @path = @router.getPath ['event']
       Then -> expect(@path).toEqual [@a, @b, @c]
 
-   describe '#index', ->
+    describe '#index', ->
 
-     When -> expect(@router.index()).toBe 0
-     When -> expect(@router.index()).toBe 1
-     When -> expect(@router.index()).toBe 2
+      When -> expect(@router.index()).toBe 0
+      When -> expect(@router.index()).toBe 1
+      When -> expect(@router.index()).toBe 2
+
+    describe '#fns', ->
+
+      Given -> console.log @router
+      When -> @res = @router.fns()
+      Then -> expect(@res).toEqual {}
+
+    describe '#fns (name:String="test")', ->
+
+      Given -> @name = 'test'
+      When -> @res = @router.fns @name
+      Then -> expect(@res).toEqual []
+
+     
