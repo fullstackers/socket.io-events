@@ -157,6 +157,11 @@ describe 'Router', ->
       Given -> @test = => @router.use 'some event'
       Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
 
+    describe '#use (regexp:RegExp)', ->
+
+      Given -> @test = => @router.use /^w+/
+      Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
+
     describe '#use (fn:Function)', ->
 
       Given -> @fn = (socket, args, next) ->
@@ -177,6 +182,13 @@ describe 'Router', ->
       When -> @router.use @name, @fn
       Then -> expect(@router.fns(@name).length).toBe 1
 
+    describe '#use (regexp:RegExp,fn:Function)', ->
+
+      Given -> @name = /\w+/
+      Given -> @fn = (socket, args, next) ->
+      When -> @router.use @name, @fn
+      Then -> expect(@router.fns(@name).length).toBe 1
+
     describe '#use (name:Array)', ->
 
       Given -> @a = ->
@@ -192,17 +204,45 @@ describe 'Router', ->
 
     describe '#getPath (name:String)', ->
 
-      Given -> @a = ->
-      Given -> @b = ->
-      Given -> @c = ->
-      Given -> @router.use @a
-      Given -> @router.use 'event', @b
-      Given -> @router.use '*', @c
-      When -> @path = @router.getPath ['event']
-      Then -> expect(@path).toEqual [@a, @b, @c]
+      Given -> @a = jasmine.createSpy 'a'
+      Given -> @b = jasmine.createSpy 'b'
+      Given -> @c = jasmine.createSpy 'c'
+      Given -> @d = jasmine.createSpy 'd'
+      Given -> @router.use 'test*', @a
+      Given -> @router.use 'tes*', @b
+      Given -> @router.use 't*r', @c
+      Given -> @router.use /^\w+/, @d
 
-   describe '#index', ->
+      describe 'name matches', ->
 
-     When -> expect(@router.index()).toBe 0
-     When -> expect(@router.index()).toBe 1
-     When -> expect(@router.index()).toBe 2
+        Given -> @name = 'tester'
+        When -> @res = @router.getPath @name
+        Then -> expect(@res).toEqual [@a, @b, @c, @d]
+
+      describe 'name does not matches', ->
+
+        Given -> @name = '!sleeper'
+        When -> @res = @router.getPath @name
+        Then -> expect(@res).toEqual []
+
+    describe '#index', ->
+
+      When -> expect(@router.index()).toBe 0
+      When -> expect(@router.index()).toBe 1
+      When -> expect(@router.index()).toBe 2
+
+    describe '#fns', ->
+
+      When -> @res = @router.fns()
+      Then -> expect(@res).toEqual []
+
+    describe '#fns (name:String="test")', ->
+
+      Given -> @name = 'test'
+      When -> @res = @router.fns @name
+      Then -> expect(@res).toEqual []
+
+    describe '#_fns', ->
+
+      When -> @res = @router._fns()
+      Then -> expect(@res).toEqual {}

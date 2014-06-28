@@ -22,6 +22,8 @@ io.use(router);
 * Express-like routing capabilties for socket.io events.
 * Gives you more control over how events are handled.
 * Attach `Router` instances to other `Router` instances.
+* Support for "wildcard" (*) and Regular Expression matching.
+* Event consumption and propagation.
 
 # Examples
 
@@ -36,9 +38,23 @@ router.on(function (socket, args, next) {
   next();
 });
 
-// handles events named 'some event'
-router.on('some event', function (socket, args, next) {
-  assert.equal(args[0], 'some event');
+// handles all events too
+router.on('*', function (socket, args, next) {
+  next();
+});
+
+// handles events matching 'some*'
+router.on('some*', function (socket, args, next) {
+  next();
+});
+
+// handles events matching '*events'
+router.on('*event', function (socket, args, next) {
+  next();
+});
+
+// handle events matching /^\w+/ 
+router.on(/^\w+/, function (socket, args, next) {
   next();
 });
 
@@ -46,6 +62,8 @@ router.on('some event', function (socket, args, next) {
 router.on(function (socket, args) {
   //emits back to the client, and ends the chain.  
   //Think `res.end()` for express.
+  //calling `emit()` consumes the event which means no other handlers
+  //get a chance to process it.
   socket.emit(args.shift(), args);
 });
 
@@ -58,14 +76,14 @@ var io = require('socket.io')(3000);
 io.use(router);
 ```
 
-Here is an example of *not* handling a message and letting [socket.io](https://github.com/Automattic/socket.io "socket.io")
+Here is an example of *not* consuming the event and letting [socket.io](https://github.com/Automattic/socket.io "socket.io")
 handle things *business as usual*.
 
 ```javascript
 
 var router = require('socket.io-events')();
 router.on(function (socket, args, next) {
-  //do something!
+  //do something, but don't consume it.
   next();
 });
 
@@ -213,6 +231,28 @@ var pretty = function (sock, args, next) { next() };
 router.use('chat', chop, clean, pretty);
 ```
 
+### Router#use(event:RegExp, fn:Function, ...)
+
+Bind the `function` using a `RegExp` pattern to match the `event`.
+
+```javascript
+router.use(/\w+/, function (sock, args, next) {
+  assert.equal(args[0], 'chat');
+  args[1] = args[1].length > 128 ? args[1].slice(0, 125) + '...' : args[1];
+  next();
+});
+```
+
+You can also pass in multiple `function`s for handling the `event`.
+
+```javascript
+var chop = function (sock, args, next) { next() };
+var clean = function (sock, args, next) { next() };
+var pretty = function (sock, args, next) { next() };
+
+router.use(/\w+/, chop, clean, pretty);
+```
+
 ### Router#use(router:Router, ...)
 
 You can attach another `Router` instance to your `Router` instance.
@@ -342,7 +382,3 @@ Tests are run using grunt.  You must first globally install the grunt-cli with n
 To run the tests, just run grunt
 
     > grunt spec
-
-## TODO
-
-1) Support regex or some other kind of pattern matching other thang string literals
