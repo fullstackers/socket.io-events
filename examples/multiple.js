@@ -1,26 +1,31 @@
+var debug = require('debug')('router');
 var ok = require('assert').equal;
 var Router = require('./..');
 
 var a = Router();
 a.on('say', function (sock, args, next) {
+  debug('World');
   args.push('World');
   next();
 });
 
 var b = Router();
 b.use('say', function (sock, args, next) { 
+  debug('Good');
   args.push('Good'); 
   next();
 });
 
 var c = Router();
 c.use('say', function (sock, args, next) { 
+  debug('Bye');
   args.push('Bye');
   next();
 });
 
 var d = Router();
 d.use(function (sock, args, next) { 
+  debug('!!!');
   args.push('!!!');
   next();
 });
