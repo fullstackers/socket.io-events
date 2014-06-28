@@ -153,7 +153,7 @@ describe 'routing events', ->
       @a.on '*event', (sock, args, next) =>
         @hit++
         next()
-      @a.on '[\w\s]+', (sock, args, next) =>
+      @a.on /^\w+\s/, (sock, args, next) =>
         @hit++
         next()
 

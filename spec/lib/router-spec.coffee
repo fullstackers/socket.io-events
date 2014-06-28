@@ -157,6 +157,11 @@ describe 'Router', ->
       Given -> @test = => @router.use 'some event'
       Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
 
+    describe '#use (regexp:RegExp)', ->
+
+      Given -> @test = => @router.use /^w+/
+      Then -> expect(@test).toThrow new Error 'we have the name, but need a handler'
+
     describe '#use (fn:Function)', ->
 
       Given -> @fn = (socket, args, next) ->
@@ -173,6 +178,13 @@ describe 'Router', ->
     describe '#use (name:String,fn:Function)', ->
 
       Given -> @name = 'name'
+      Given -> @fn = (socket, args, next) ->
+      When -> @router.use @name, @fn
+      Then -> expect(@router.fns(@name).length).toBe 1
+
+    describe '#use (regexp:RegExp,fn:Function)', ->
+
+      Given -> @name = /\w+/
       Given -> @fn = (socket, args, next) ->
       When -> @router.use @name, @fn
       Then -> expect(@router.fns(@name).length).toBe 1
@@ -195,19 +207,21 @@ describe 'Router', ->
       Given -> @a = jasmine.createSpy 'a'
       Given -> @b = jasmine.createSpy 'b'
       Given -> @c = jasmine.createSpy 'c'
+      Given -> @d = jasmine.createSpy 'd'
       Given -> @router.use 'test*', @a
       Given -> @router.use 'tes*', @b
       Given -> @router.use 't*r', @c
+      Given -> @router.use /^\w+/, @d
 
       describe 'name matches', ->
 
         Given -> @name = 'tester'
         When -> @res = @router.getPath @name
-        Then -> expect(@res).toEqual [@a, @b, @c]
+        Then -> expect(@res).toEqual [@a, @b, @c, @d]
 
       describe 'name does not matches', ->
 
-        Given -> @name = 'sleeper'
+        Given -> @name = '!sleeper'
         When -> @res = @router.getPath @name
         Then -> expect(@res).toEqual []
 
