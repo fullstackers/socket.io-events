@@ -9,3 +9,5 @@ echo 'testing routers attached to routers'
 node multiple
 echo 'testing routers next to eachother'
 node sibilings
+echo 'testing event consumption'
+node consume
