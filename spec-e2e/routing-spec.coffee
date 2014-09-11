@@ -190,14 +190,14 @@ describe 'routing events', ->
         next()
 
     Given ->
-      @io = require('socket.io')(3004)
+      @io = require('socket.io')(3005)
       @io.use @a
       @io.on 'connect', (socket) ->
         socket.on 'some event', ->
           socket.emit 'some event', new Date
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3004')
+      @socket = require('socket.io-client').connect('ws://localhost:3005')
       @socket.on 'connect', =>
         @a = 0
         @socket.emit 'some event'
