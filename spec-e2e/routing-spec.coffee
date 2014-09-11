@@ -172,3 +172,39 @@ describe 'routing events', ->
         done()
 
     Then -> expect(@hit).toBe 3
+
+  describe 'should handle multiple events', ->
+
+    Given -> @hit = 0
+
+    Given ->
+      @a = require('./..')()
+      @a.on 'some*', (sock, args, next) =>
+        @hit++
+        next()
+      @a.on '*event', (sock, args, next) =>
+        @hit++
+        next()
+      @a.on /^\w+\s/, (sock, args, next) =>
+        @hit++
+        next()
+
+    Given ->
+      @io = require('socket.io')(3004)
+      @io.use @a
+      @io.on 'connect', (socket) ->
+        socket.on 'some event', ->
+          socket.emit 'some event', new Date
+
+    When (done) ->
+      @socket = require('socket.io-client').connect('ws://localhost:3004')
+      @socket.on 'connect', =>
+        @a = 0
+        @socket.emit 'some event'
+        @socket.emit 'some event'
+        @socket.emit 'some event'
+      @socket.on 'some event', =>
+        if ++@a == 3
+          done()
+
+    Then -> expect(@hit).toBe 9
