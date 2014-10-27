@@ -36,7 +36,7 @@ describe 'Router', ->
       When -> @router.onEvent.call @socket, @packet
       Then -> expect(@socket.ack).toHaveBeenCalledWith @packet.id
       And -> expect(@router.onRoute).toHaveBeenCalledWith null, jasmine.any(Object), ['message', 'hello', @fn]
-      And -> expect(@router.onRoute.mostRecentCall.args[1].sock).toBe @socket
+      #And -> expect(@router.onRoute.mostRecentCall.args[1].sock).toBe @socket
 
     describe '#onRoute (err:Error=null, sock:Object, args:Array)', ->
 
