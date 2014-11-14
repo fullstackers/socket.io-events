@@ -24,13 +24,13 @@ describe 'routing events', ->
         next()
 
     Given ->
-      @io = require('socket.io')(3000)
+      @io = require('socket.io')(5000)
       @io.use @router.middleware
 
     Given -> @message = 'Hello, World'
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3000')
+      @socket = require('socket.io-client').connect('ws://localhost:5000')
       @socket.on 'connect', =>
         @socket.emit 'some event', @message
       @socket.on 'some event', (message) =>
@@ -50,7 +50,7 @@ describe 'routing events', ->
       @router.on (socket, args, next) -> next()
 
     Given ->
-      @io = require('socket.io')(3001)
+      @io = require('socket.io')(5001)
       @io.use @router.middleware
       @io.on 'connect', (socket) ->
         socket.on 'echo', (data) ->
@@ -59,7 +59,7 @@ describe 'routing events', ->
     Given -> @message = 'Hello, World'
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3001')
+      @socket = require('socket.io-client').connect('ws://localhost:5001')
       @socket.on 'connect', =>
         @socket.emit 'echo', @message
       @socket.on 'echo', (message) =>
@@ -88,7 +88,7 @@ describe 'routing events', ->
     Given -> @a.use @b
 
     Given ->
-      @io = require('socket.io')(3002)
+      @io = require('socket.io')(5002)
       @io.use @a
       @io.on 'connect', (socket) ->
         socket.on 'echo', (data) ->
@@ -97,7 +97,7 @@ describe 'routing events', ->
     Given -> @message = 'Hello, World'
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3002')
+      @socket = require('socket.io-client').connect('ws://localhost:5002')
       @socket.on 'connect', =>
         @socket.emit 'echo', @message
       @socket.on 'echo', (message) =>
@@ -124,7 +124,7 @@ describe 'routing events', ->
         next()
 
     Given ->
-      @io = require('socket.io')(3003)
+      @io = require('socket.io')(5003)
       @io.use @a
       @io.use @b
       @io.on 'connect', (socket) ->
@@ -132,7 +132,7 @@ describe 'routing events', ->
           socket.emit 'echo', play, nice
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3003')
+      @socket = require('socket.io-client').connect('ws://localhost:5003')
       @socket.on 'connect', =>
         @socket.emit 'echo', @message
       @socket.on 'echo', (play, nice) =>
@@ -158,14 +158,14 @@ describe 'routing events', ->
         next()
 
     Given ->
-      @io = require('socket.io')(3004)
+      @io = require('socket.io')(5004)
       @io.use @a
       @io.on 'connect', (socket) ->
         socket.on 'some event', ->
           socket.emit 'some event', new Date
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3004')
+      @socket = require('socket.io-client').connect('ws://localhost:5004')
       @socket.on 'connect', =>
         @socket.emit 'some event'
       @socket.on 'some event', ->
@@ -190,14 +190,14 @@ describe 'routing events', ->
         next()
 
     Given ->
-      @io = require('socket.io')(3005)
+      @io = require('socket.io')(5005)
       @io.use @a
       @io.on 'connect', (socket) ->
         socket.on 'some event', ->
           socket.emit 'some event', new Date
 
     When (done) ->
-      @socket = require('socket.io-client').connect('ws://localhost:3005')
+      @socket = require('socket.io-client').connect('ws://localhost:5005')
       @socket.on 'connect', =>
         @a = 0
         @socket.emit 'some event'
